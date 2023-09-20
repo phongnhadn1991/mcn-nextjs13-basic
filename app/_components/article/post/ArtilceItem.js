@@ -6,8 +6,8 @@ export default function ArtilceItem(props) {
   const { post } = props;
   const { id, title, featuredImage, excerpt, date, slug, categories } = post;
   const cateogryName = categories?.nodes[0]?.name;
-  const cateogrySlug = `/blog/${categories?.nodes[0]?.slug}`;
-  const urlPost = `/post/${slug}`;
+  const cateogrySlug = `/blog/category/${categories?.nodes[0]?.slug}`;
+  const urlPost = `/blog/${slug}`;
   const thumbnail = featuredImage?.node?.mediaDetails?.sizes[0]?.sourceUrl;
   const thumbnailSrc = featuredImage?.node?.sourceUrl
 
