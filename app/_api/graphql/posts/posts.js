@@ -1,6 +1,6 @@
 export const getAllPosts = (limitPost) => ({
   query: `
-  query NewQuery($first: Int = ${limitPost}) {
+  query getAllPost($first: Int = ${limitPost}) {
     posts(first: $first) {
       nodes {
         id
@@ -30,6 +30,24 @@ export const getAllPosts = (limitPost) => ({
             count
             slug
           }
+        }
+      }
+    }
+  }
+  `,
+});
+
+export const getPostBySlug = (slug) => ({
+  query: `
+  query PostBySlug($slug: String = "tap-doan-parkcity-property-holdings-den-tu-malaysia-tim-kiem-co-hoi-dau-tu-bat-dong-san-tai-da-nang-2") {
+    postBy(slug: $slug) {
+      id
+      content
+      excerpt
+      title
+      featuredImage {
+        node {
+          sourceUrl
         }
       }
     }
