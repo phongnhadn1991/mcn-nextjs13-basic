@@ -26,20 +26,20 @@ export default function Header() {
                     <ul className="font-medium flex flex-row gap-16">
                         <li className={routerPath === "/" ? 'text-blue-500' : ''}>
                             <Link href={"/"}>
-                                Trang chủ
+                                Home Page
                             </Link>
                         </li>
                         <li className={routerPath === "/about" ? 'text-blue-500' : ''}>
-                            <Link href={"/about"}>Giới thiệu</Link>
+                            <Link href={"/about"}>About</Link>
                         </li>
                         <li className={routerPath === "/project" ? 'text-blue-500' : ''}>
-                            <Link href={"/project"}>Dự án</Link>
+                            <Link href={"/project"}>Projects</Link>
                         </li>
-                        <li className={routerPath === "/news" ? 'text-blue-500' : ''}>
-                            <Link href={"/news"}>Tin tức</Link>
+                        <li className={routerPath === "/blog" ? 'text-blue-500' : ''}>
+                            <Link href={"/blog"}>Blog</Link>
                         </li>
                         <li className={routerPath === "/contact" ? 'text-blue-500' : ''}>
-                            <Link href={"/contact"}>Liên hệ</Link>
+                            <Link href={"/contact"}>Contact</Link>
                         </li>
                     </ul>
                 </div>
