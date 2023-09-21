@@ -24,13 +24,15 @@
   justify-content: center;
   gap: .5rem;
 }
-
 .pagination li a {
   display: block;
   padding: .5rem 1rem;
   border-radius: 6px;
 }
-
 .pagination li.active a {
   background: #ebe9e9
+}
+.pagination li.disabled a {
+  opacity: .4;
+  cursor: not-allowed;
 }
