@@ -13,11 +13,7 @@ const DetailBlog = ({ params }) => {
 
   const key = params.slug ? `graphql_getPostBySlug/blog/${params?.slug}` : null;
 
-  const { data: postData, isLoading: postIsLoading } = useSWR(key, fetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  const { data: postData, isLoading: postIsLoading } = useSWR(key, fetcher);
 
   return (
     <div className="c-page__homepage">

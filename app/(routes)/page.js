@@ -9,7 +9,7 @@ const HomePage = () => {
   const fetcher = async () => {
     return await API.post(
       process.env.WP_API_GRAPHQL,
-      getAllPosts({ per_page: 6 })
+      getAllPosts({ per_page: 3 })
     ).then((res) => res.data.data.posts.nodes);
   };
 
@@ -17,11 +17,7 @@ const HomePage = () => {
     data: posts,
     error: postError,
     isLoading: postIsLoading,
-  } = useSWR("graphql_getAllPosts/homepage", fetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  } = useSWR("graphql_getAllPosts/homepage", fetcher);
   if (postError) return "An error has occurred.";
 
   return (
