@@ -6,10 +6,13 @@ import API from "../../_api/configAxios";
 import { getAllPosts, getTotalPosts } from "../../_api/graphql/posts/posts";
 import Pagination from "@/app/_components/pagination/Pagination";
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const BlogPage = () => {
+  const router = useRouter();
+  const pageParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(0);
-  const PAGE_PER = 3;
+  const PAGE_PER = 9;
 
   const fetcherPosts = async (page) => {
     return await API.post(
@@ -38,6 +41,7 @@ const BlogPage = () => {
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
+    router.push(`?page=${selected + 1}`, { scroll: false });
   };
 
   return (
