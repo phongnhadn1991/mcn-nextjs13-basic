@@ -17,7 +17,7 @@ const HomePage = () => {
     data: posts,
     error: postError,
     isLoading: postIsLoading,
-  } = useSWR("graphql_getAllPosts", fetcher, {
+  } = useSWR("graphql_getAllPosts/homepage", fetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

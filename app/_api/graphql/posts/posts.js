@@ -39,7 +39,7 @@ export const getAllPosts = (limitPost) => ({
 
 export const getPostBySlug = (slug) => ({
   query: `
-  query PostBySlug($slug: String = "tap-doan-parkcity-property-holdings-den-tu-malaysia-tim-kiem-co-hoi-dau-tu-bat-dong-san-tai-da-nang-2") {
+  query PostBySlug($slug: String = "${slug}") {
     postBy(slug: $slug) {
       id
       content
