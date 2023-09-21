@@ -7,9 +7,10 @@ import { getAllPosts } from "../../_api/graphql/posts/posts";
 
 const BlogPage = () => {
   const fetcher = async () => {
-    return await API.post(process.env.WP_API_GRAPHQL, getAllPosts(9)).then(
-      (res) => res.data.data.posts.nodes
-    );
+    return await API.post(
+      process.env.WP_API_GRAPHQL,
+      getAllPosts({ per_page: 9 })
+    ).then((res) => res.data.data.posts.nodes);
   };
 
   const {

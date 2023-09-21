@@ -1,7 +1,11 @@
-export const getAllPosts = (limitPost) => ({
-  query: `
-  query getAllPost($first: Int = ${limitPost}) {
-    posts(first: $first) {
+export const getAllPosts = (params) => {
+  const { per_page, offset } = params;
+  const per_page_Val = per_page ? per_page : 9;
+  const offset_Val = offset ? offset : null;
+  return {
+    query: `
+  query getAllPost($size: Int = ${per_page_Val}, $offset: Int = ${offset_Val}) {
+    posts(where: {offsetPagination: {offset: $offset, size: $size}}) {
       nodes {
         id
         postId
@@ -32,10 +36,16 @@ export const getAllPosts = (limitPost) => ({
           }
         }
       }
+      pageInfo {
+        offsetPagination {
+          total
+        }
+      }
     }
   }
   `,
-});
+  };
+};
 
 export const getPostBySlug = (slug) => ({
   query: `

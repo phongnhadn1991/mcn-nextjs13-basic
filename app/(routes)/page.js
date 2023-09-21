@@ -6,11 +6,11 @@ import API from "../_api/configAxios";
 import { getAllPosts } from "../_api/graphql/posts/posts";
 
 const HomePage = () => {
-  
   const fetcher = async () => {
-    return await API.post(process.env.WP_API_GRAPHQL,getAllPosts(6)).then(
-      (res) => res.data.data.posts.nodes
-    );
+    return await API.post(
+      process.env.WP_API_GRAPHQL,
+      getAllPosts({ per_page: 6 })
+    ).then((res) => res.data.data.posts.nodes);
   };
 
   const {
