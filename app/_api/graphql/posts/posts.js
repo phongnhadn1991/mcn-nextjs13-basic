@@ -64,3 +64,17 @@ export const getPostBySlug = (slug) => ({
   }
   `,
 });
+
+export const getTotalPosts = () => ({
+  query: `
+  query GetTotalPost {
+    posts {
+      pageInfo {
+        offsetPagination {
+          total
+        }
+      }
+    }
+  }
+  `,
+});

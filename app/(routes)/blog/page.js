@@ -3,26 +3,42 @@ import ArtilceItem from "../../_components/article/post/ArtilceItem";
 import ArticleItemSkeleton from "../../_components/article/post/ArticleItemSkeleton";
 import useSWR from "swr";
 import API from "../../_api/configAxios";
-import { getAllPosts } from "../../_api/graphql/posts/posts";
+import { getAllPosts, getTotalPosts } from "../../_api/graphql/posts/posts";
+import Pagination from "@/app/_components/pagination/Pagination";
+import { useState } from "react";
 
 const BlogPage = () => {
-  const fetcher = async () => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const PAGE_PER = 3;
+
+  const fetcherPosts = async (page) => {
     return await API.post(
       process.env.WP_API_GRAPHQL,
-      getAllPosts({ per_page: 9 })
-    ).then((res) => res.data.data.posts.nodes);
+      getAllPosts({ per_page: PAGE_PER, offset: page * PAGE_PER })
+    ).then((res) => res.data.data.posts);
   };
-
   const {
     data: posts,
     error: postError,
     isLoading: postIsLoading,
-  } = useSWR("graphql_getAllPosts/blogpage", fetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
-  if (postError) return "An error has occurred.";
+  } = useSWR(`graphql_getAllPosts/blogpage/${currentPage}`, () =>
+    fetcherPosts(currentPage)
+  );
+
+  const fetcherPostTotal = async () => {
+    return await API.post(process.env.WP_API_GRAPHQL, getTotalPosts()).then(
+      (res) => res.data.data.posts
+    );
+  };
+  const { data: postsTotal } = useSWR(`graphql_getPostTotal`, fetcherPostTotal);
+
+  const PAGE_COUNT = Math.ceil(
+    postsTotal?.pageInfo?.offsetPagination?.total / PAGE_PER
+  );
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
 
   return (
     <div className="c-page__blogpage">
@@ -34,9 +50,14 @@ const BlogPage = () => {
           {postIsLoading &&
             [...Array(3)].map((e, i) => <ArticleItemSkeleton key={i} />)}
 
-          {posts &&
-            posts?.map((post, i) => <ArtilceItem post={post} key={post.id} />)}
+          {posts?.nodes &&
+            posts?.nodes?.map((post, i) => (
+              <ArtilceItem post={post} key={post.id} />
+            ))}
         </div>
+        {postsTotal && (
+          <Pagination pageCount={PAGE_COUNT} onPageChange={handlePageChange} />
+        )}
       </div>
     </div>
   );
