@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import API from "@/_api/configAxios";
 
-const CategoryPage = () => {
+const CategoryPage = ({ params }) => {
+  console.log(params);
   const router = useRouter();
   const pageParam = useSearchParams().get("page");
 

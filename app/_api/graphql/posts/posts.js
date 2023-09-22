@@ -1,11 +1,14 @@
 export const getAllPosts = (params) => {
-  const { per_page, offset } = params;
+  const { per_page, offset, category_slug } = params;
   const per_page_Val = per_page ? per_page : 9;
   const offset_Val = offset ? offset : null;
+  const category_slug_val = params?.category_slug
+    ? JSON.stringify(params?.category_slug)
+    : null;
   return {
     query: `
   query getAllPost($size: Int = ${per_page_Val}, $offset: Int = ${offset_Val}) {
-    posts(where: {offsetPagination: {offset: $offset, size: $size}}) {
+    posts(where: {offsetPagination: { offset: $offset, size: $size}, categoryName: null}) {
       nodes {
         id
         postId
