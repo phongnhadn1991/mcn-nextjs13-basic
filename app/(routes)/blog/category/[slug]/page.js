@@ -4,7 +4,7 @@ import ArticleItemSkeleton from "@/_components/article/post/ArticleItemSkeleton"
 import useSWR from "swr";
 
 import { getAllPosts, getTotalPosts } from "@/_api/graphql/posts/posts";
-import Pagination from "@/app/_components/pagination/Pagination";
+import Pagination from "@/_components/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import API from "@/_api/configAxios";
