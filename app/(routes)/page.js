@@ -1,9 +1,9 @@
 "use client";
-import ArtilceItem from "../_components/article/post/ArtilceItem";
-import ArticleItemSkeleton from "../_components/article/post/ArticleItemSkeleton";
+import ArtilceItem from "@/_components/article/post/ArtilceItem";
+import ArticleItemSkeleton from "@/_components/article/post/ArticleItemSkeleton";
 import useSWR from "swr";
-import API from "../_api/configAxios";
-import { getAllPosts } from "../_api/graphql/posts/posts";
+import API from "@/_api/configAxios";
+import { getAllPosts } from "@/_api/graphql/posts/posts";
 
 const HomePage = () => {
   const fetcher = async () => {

@@ -1,10 +1,10 @@
 "use client";
-import ArtilceItem from "../../_components/article/post/ArtilceItem";
-import ArticleItemSkeleton from "../../_components/article/post/ArticleItemSkeleton";
+import ArtilceItem from "@/_components/article/post/ArtilceItem";
+import ArticleItemSkeleton from "@/_components/article/post/ArticleItemSkeleton";
 import useSWR from "swr";
-import API from "../../_api/configAxios";
-import { getAllPosts, getTotalPosts } from "../../_api/graphql/posts/posts";
-import Pagination from "@/app/_components/pagination/Pagination";
+import API from "@/_api/configAxios";
+import { getAllPosts, getTotalPosts } from "@/_api/graphql/posts/posts";
+import Pagination from "@/_components/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -48,8 +48,10 @@ const BlogPage = () => {
   useEffect(() => {
     if (pageParam && parseInt(pageParam) > PAGE_COUNT) {
       router.replace("?page=1", { scroll: false });
-    }else {
-      pageParam && parseInt(pageParam) < PAGE_COUNT ? setCurrentPage(parseInt(pageParam) - 1) : 0;
+    } else {
+      pageParam && parseInt(pageParam) < PAGE_COUNT
+        ? setCurrentPage(parseInt(pageParam) - 1)
+        : 0;
     }
   }, [pageParam, PAGE_COUNT]);
 
