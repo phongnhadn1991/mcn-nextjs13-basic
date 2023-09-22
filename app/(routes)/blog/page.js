@@ -13,7 +13,7 @@ const BlogPage = () => {
   const pageParam = useSearchParams().get("page");
 
   const [currentPage, setCurrentPage] = useState(0);
-  const PAGE_PER = 2;
+  const PAGE_PER = 9;
 
   const fetcherPosts = async (page) => {
     return await API.post(
