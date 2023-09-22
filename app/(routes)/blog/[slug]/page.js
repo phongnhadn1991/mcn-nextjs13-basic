@@ -1,7 +1,7 @@
 "use client";
-import { getPostBySlug } from "@/app/_api/graphql/posts/posts";
+import { getPostBySlug } from "@/_api/graphql/posts/posts";
 import useSWR from "swr";
-import API from "../../../_api/configAxios";
+import API from "@/_api/configAxios";
 
 const DetailBlog = ({ params }) => {
   const fetcher = async () => {
