@@ -10,11 +10,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 const BlogPage = () => {
   const router = useRouter();
-  const pageParam = useSearchParams().get('page');
+  const pageParam = useSearchParams().get("page");
 
   const [currentPage, setCurrentPage] = useState(0);
-  const PAGE_PER = 9;
-
+  const PAGE_PER = 2;
 
   const fetcherPosts = async (page) => {
     return await API.post(
@@ -26,7 +25,7 @@ const BlogPage = () => {
     data: posts,
     error: postError,
     isLoading: postIsLoading,
-  } = useSWR(`graphql_getAllPosts/blogpage/${currentPage}`, () =>
+  } = useSWR(`graphql_getAllPosts/blogpage${currentPage}`, () =>
     fetcherPosts(currentPage)
   );
 
@@ -43,16 +42,16 @@ const BlogPage = () => {
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
-    router.push(`?page=${selected + 1}`, { scroll: false });
+    router.push(`?page=${selected + 1}`);
   };
 
   useEffect(() => {
     if (pageParam && parseInt(pageParam) > PAGE_COUNT) {
-      router.push('/blog', { scroll: false });
+      router.replace("?page=1", { scroll: false });
+    }else {
+      pageParam && parseInt(pageParam) < PAGE_COUNT ? setCurrentPage(parseInt(pageParam) - 1) : 0;
     }
-    setCurrentPage(parseInt(pageParam) - 1);
   }, [pageParam, PAGE_COUNT]);
-
 
   return (
     <div className="c-page__blogpage">
@@ -70,7 +69,11 @@ const BlogPage = () => {
             ))}
         </div>
         {postsTotal && (
-          <Pagination pageCount={PAGE_COUNT} onPageChange={handlePageChange} />
+          <Pagination
+            pageCount={PAGE_COUNT}
+            onPageChange={handlePageChange}
+            forcePage={currentPage}
+          />
         )}
       </div>
     </div>
