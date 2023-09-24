@@ -2,10 +2,12 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function Header() {
   const routerPath = usePathname();
+  const pageParam = useSearchParams().get("page");
+  const urlBlog = pageParam ? '/blog?page=1' : '/blog'
 
   return (
     <div className="c-header shadow">
@@ -33,7 +35,7 @@ export default function Header() {
               <Link href={"/project"}>Projects</Link>
             </li>
             <li className={routerPath === "/blog" ? "text-blue-500" : ""}>
-              <Link href={"/blog"}>Blog</Link>
+              <Link href={urlBlog}>Blog</Link>
             </li>
             <li className={routerPath === "/contact" ? "text-blue-500" : ""}>
               <Link href={"/contact"}>Contact</Link>

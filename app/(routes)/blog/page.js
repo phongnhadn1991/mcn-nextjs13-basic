@@ -3,7 +3,7 @@ import ArtilceItem from "@/_components/article/post/ArtilceItem";
 import ArticleItemSkeleton from "@/_components/article/post/ArticleItemSkeleton";
 import useSWR from "swr";
 import API from "@/_api/configAxios";
-import { getAllPosts, getTotalPosts } from "@/_api/graphql/posts/posts";
+import { getAllPosts } from "@/_api/graphql/posts/posts";
 import Pagination from "@/_components/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -29,15 +29,8 @@ const BlogPage = () => {
     fetcherPosts(currentPage)
   );
 
-  const fetcherPostTotal = async () => {
-    return await API.post(process.env.WP_API_GRAPHQL, getTotalPosts()).then(
-      (res) => res.data.data.posts
-    );
-  };
-  const { data: postsTotal } = useSWR(`graphql_getPostTotal`, fetcherPostTotal);
-
   const PAGE_COUNT = Math.ceil(
-    postsTotal?.pageInfo?.offsetPagination?.total / PAGE_PER
+    posts?.pageInfo?.offsetPagination?.total / PAGE_PER
   );
 
   const handlePageChange = ({ selected }) => {
@@ -49,7 +42,7 @@ const BlogPage = () => {
     if (pageParam && parseInt(pageParam) > PAGE_COUNT) {
       router.replace("?page=1", { scroll: false });
     } else {
-      pageParam && parseInt(pageParam) < PAGE_COUNT
+      pageParam && parseInt(pageParam) <= PAGE_COUNT
         ? setCurrentPage(parseInt(pageParam) - 1)
         : 0;
     }
@@ -70,7 +63,7 @@ const BlogPage = () => {
               <ArtilceItem post={post} key={post.id} />
             ))}
         </div>
-        {postsTotal && (
+        {posts && (
           <Pagination
             pageCount={PAGE_COUNT}
             onPageChange={handlePageChange}

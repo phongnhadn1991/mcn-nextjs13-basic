@@ -3,43 +3,38 @@ import ArtilceItem from "@/_components/article/post/ArtilceItem";
 import ArticleItemSkeleton from "@/_components/article/post/ArticleItemSkeleton";
 import useSWR from "swr";
 
-import { getAllPosts, getTotalPosts } from "@/_api/graphql/posts/posts";
+import { getPostBySlug, getTotalPosts  } from "@/_api/graphql/posts/posts";
 import Pagination from "@/_components/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import API from "@/_api/configAxios";
 
 const CategoryPage = ({ params }) => {
-  console.log(params);
   const router = useRouter();
   const pageParam = useSearchParams().get("page");
 
   const [currentPage, setCurrentPage] = useState(0);
   const PAGE_PER = 9;
 
-  const fetcherPosts = async (page) => {
+  const fetcherPostByCategorySlug = async () => {
     return await API.post(
       process.env.WP_API_GRAPHQL,
-      getAllPosts({ per_page: PAGE_PER, offset: page * PAGE_PER })
-    ).then((res) => res.data.data.posts);
+      getPostBySlug(params.slug)
+    ).then((res) => {
+      return res.data.data.posts
+    });
   };
   const {
     data: posts,
     error: postError,
     isLoading: postIsLoading,
-  } = useSWR(`graphql_getAllPosts/blogpage${currentPage}`, () =>
-    fetcherPosts(currentPage)
+  } = useSWR(`graphql_getAllPosts/blog/category${params.slug}`,
+    fetcherPostByCategorySlug
   );
 
-  const fetcherPostTotal = async () => {
-    return await API.post(process.env.WP_API_GRAPHQL, getTotalPosts()).then(
-      (res) => res.data.data.posts
-    );
-  };
-  const { data: postsTotal } = useSWR(`graphql_getPostTotal`, fetcherPostTotal);
 
   const PAGE_COUNT = Math.ceil(
-    postsTotal?.pageInfo?.offsetPagination?.total / PAGE_PER
+    posts?.pageInfo?.offsetPagination?.total / PAGE_PER
   );
 
   const handlePageChange = ({ selected }) => {
@@ -51,11 +46,15 @@ const CategoryPage = ({ params }) => {
     if (pageParam && parseInt(pageParam) > PAGE_COUNT) {
       router.replace("?page=1", { scroll: false });
     } else {
-      pageParam && parseInt(pageParam) < PAGE_COUNT
+      pageParam && parseInt(pageParam) <= PAGE_COUNT
         ? setCurrentPage(parseInt(pageParam) - 1)
         : 0;
     }
   }, [pageParam, PAGE_COUNT]);
+
+  useEffect(() => {
+    console.log("🚀  posts :", posts)
+  }, [posts]);
 
   return (
     <div className="c-page__blogpage">
@@ -72,7 +71,7 @@ const CategoryPage = ({ params }) => {
               <ArtilceItem post={post} key={post.id} />
             ))}
         </div>
-        {postsTotal && (
+        {posts && (
           <Pagination
             pageCount={PAGE_COUNT}
             onPageChange={handlePageChange}

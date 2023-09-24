@@ -50,34 +50,48 @@ export const getAllPosts = (params) => {
   };
 };
 
-export const getPostBySlug = (slug) => ({
-  query: `
-  query PostBySlug($slug: String = "${slug}") {
-    postBy(slug: $slug) {
-      id
-      content
-      excerpt
-      title
-      featuredImage {
-        node {
-          sourceUrl
-        }
+export const getPostBySlug = (slug) => (
+  slug ? slug : '',
+  {
+    query: `
+    query PostBySlug($categoryName: String = "${slug}") {
+      posts(where: {categoryName: $categoryName}) {
+        nodes {
+            id
+            postId
+            date
+            slug
+            title(format: RENDERED)
+            excerpt(format: RENDERED)
+            featuredImage {
+              node {
+                sourceUrl
+                mediaDetails {
+                  sizes {
+                    sourceUrl
+                    width
+                    height
+                    name
+                  }
+                }
+              }
+            }
+            categories {
+              nodes {
+                id
+                categoryId
+                name
+                count
+                slug
+              }
+            }
+          }
+          pageInfo {
+            offsetPagination {
+              total
+            }
+          }
       }
     }
-  }
   `,
-});
-
-export const getTotalPosts = () => ({
-  query: `
-  query GetTotalPost {
-    posts {
-      pageInfo {
-        offsetPagination {
-          total
-        }
-      }
-    }
-  }
-  `,
-});
+  });
