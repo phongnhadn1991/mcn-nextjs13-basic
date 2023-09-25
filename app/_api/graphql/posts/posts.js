@@ -2,13 +2,13 @@ export const getAllPosts = (params) => {
   const { per_page, offset, category_slug } = params;
   const per_page_Val = per_page ? per_page : 9;
   const offset_Val = offset ? offset : null;
-  const category_slug_val = params?.category_slug
-    ? JSON.stringify(params?.category_slug)
-    : null;
+  // const category_slug_val = category_slug ? '"' + category_slug + '"' : '';
+  // $categoryName: String = ${category_slug_val}
+  // categoryName: $categoryName
   return {
     query: `
   query getAllPost($size: Int = ${per_page_Val}, $offset: Int = ${offset_Val}) {
-    posts(where: {offsetPagination: { offset: $offset, size: $size}, categoryName: null}) {
+    posts(where: { offsetPagination: { offset: $offset, size: $size}}) {
       nodes {
         id
         postId
@@ -69,10 +69,10 @@ export const getPostBySlug = (slug) => ({
 });
 
 export const getPostByCategory = (slug) => (
-  slug ? slug : '',
+  slug ? '"' + slug + '"' : '',
   {
     query: `
-    query PostBySlug($categoryName: String = "${slug}") {
+    query PostBySlug($categoryName: String = ${slug}) {
       posts(where: {categoryName: $categoryName}) {
         nodes {
             id
