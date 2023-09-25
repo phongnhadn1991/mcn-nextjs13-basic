@@ -3,7 +3,7 @@ import ArtilceItem from "@/_components/article/post/ArtilceItem";
 import ArticleItemSkeleton from "@/_components/article/post/ArticleItemSkeleton";
 import useSWR from "swr";
 
-import { getPostBySlug, getTotalPosts  } from "@/_api/graphql/posts/posts";
+import { getPostByCategory  } from "@/_api/graphql/posts/posts";
 import Pagination from "@/_components/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -19,7 +19,7 @@ const CategoryPage = ({ params }) => {
   const fetcherPostByCategorySlug = async () => {
     return await API.post(
       process.env.WP_API_GRAPHQL,
-      getPostBySlug(params.slug)
+      getPostByCategory(params.slug)
     ).then((res) => {
       return res.data.data.posts
     });

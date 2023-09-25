@@ -50,7 +50,25 @@ export const getAllPosts = (params) => {
   };
 };
 
-export const getPostBySlug = (slug) => (
+export const getPostBySlug = (slug) => ({
+  query: `
+  query PostBySlug($slug: String = "${slug}") {
+    postBy(slug: $slug) {
+      id
+      content
+      excerpt
+      title
+      featuredImage {
+        node {
+          sourceUrl
+        }
+      }
+    }
+  }
+  `,
+});
+
+export const getPostByCategory = (slug) => (
   slug ? slug : '',
   {
     query: `
