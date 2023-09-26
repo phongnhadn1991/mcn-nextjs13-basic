@@ -5,8 +5,7 @@ import Link from "next/link";
 export default function ArtilceItem(props) {
   const { post } = props;
   const { id, title, featuredImage, excerpt, date, slug, categories } = post;
-  const cateogryName = categories?.nodes[0]?.name;
-  const cateogrySlug = `/blog/category/${categories?.nodes[0]?.slug}`;
+  const cateogryName = categories?.nodes;
   const urlPost = `/blog/${slug}`;
   const thumbnail = featuredImage?.node?.mediaDetails?.sizes[0]?.sourceUrl;
   const thumbnailSrc = featuredImage?.node?.sourceUrl
@@ -41,12 +40,16 @@ export default function ArtilceItem(props) {
 
           {new Date(date).toLocaleDateString()}
         </span>
-        <Link
-          href={cateogrySlug}
-          className="bg-gray-100 hover:bg-gray-200 text-gray text-xs font-medium px-3 py-1 rounded-full transition-all ease-in-out"
-        >
-          {cateogryName}
-        </Link>
+        {cateogryName && cateogryName.map(cate =>
+          <Link
+            key={cate.id}
+            href={`/blog${cate.uri}`}
+            className="bg-gray-100 hover:bg-gray-200 text-gray text-xs font-medium px-3 py-1 rounded-full transition-all ease-in-out"
+          >
+            {cate.name}
+          </Link>
+        )}
+
       </div>
       <div className="postBody">
         <h3 className="font-semibold text-lg mb-2 line-clamp-2">

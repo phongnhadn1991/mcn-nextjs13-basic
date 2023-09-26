@@ -25,7 +25,7 @@ const BlogPage = () => {
     data: posts,
     error: postError,
     isLoading: postIsLoading,
-  } = useSWR(`graphql_getAllPosts/blogpage${currentPage}`, () =>
+  } = useSWR(`${currentPage}, '/blog'`, () =>
     fetcherPosts(currentPage)
   );
 

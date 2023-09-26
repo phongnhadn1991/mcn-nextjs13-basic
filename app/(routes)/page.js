@@ -9,7 +9,7 @@ const HomePage = () => {
   const fetcher = async () => {
     return await API.post(
       process.env.WP_API_GRAPHQL,
-      getAllPosts({ per_page: 3 })
+      getAllPosts({ per_page: 3})
     ).then((res) => res.data.data.posts.nodes);
   };
 

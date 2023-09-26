@@ -3,7 +3,7 @@ import ArtilceItem from "@/_components/article/post/ArtilceItem";
 import ArticleItemSkeleton from "@/_components/article/post/ArticleItemSkeleton";
 import useSWR from "swr";
 
-import { getPostByCategory  } from "@/_api/graphql/posts/posts";
+import { getAllPosts } from "@/_api/graphql/posts/posts";
 import Pagination from "@/_components/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,22 +16,19 @@ const CategoryPage = ({ params }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const PAGE_PER = 9;
 
-  const fetcherPostByCategorySlug = async () => {
+  const fetcherPostByCategorySlug = async (page) => {
     return await API.post(
       process.env.WP_API_GRAPHQL,
-      getPostByCategory(params.slug)
-    ).then((res) => {
-      return res.data.data.posts
-    });
+      getAllPosts({ category_slug: params.slug, per_page: PAGE_PER, offset: page * PAGE_PER })
+    ).then((res) => res.data.data.posts);
   };
   const {
     data: posts,
     error: postError,
     isLoading: postIsLoading,
-  } = useSWR(`graphql_getAllPosts/blog/category${params.slug}`,
-    fetcherPostByCategorySlug
+  } = useSWR(`${currentPage}, ${params.slug}, '/blog/category'`, () =>
+    fetcherPostByCategorySlug(currentPage)
   );
-
 
   const PAGE_COUNT = Math.ceil(
     posts?.pageInfo?.offsetPagination?.total / PAGE_PER
@@ -51,10 +48,6 @@ const CategoryPage = ({ params }) => {
         : 0;
     }
   }, [pageParam, PAGE_COUNT]);
-
-  useEffect(() => {
-    console.log("🚀  posts :", posts)
-  }, [posts]);
 
   return (
     <div className="c-page__blogpage">
